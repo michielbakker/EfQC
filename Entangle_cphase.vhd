@@ -13,7 +13,7 @@ entity ent_Cphase is
 architecture Behavioral of ent_Cphase is
   begin
   process (clk, run_entangle)
-  variable counter : integer;
+  variable counter : integer :=0;
   begin
   if rising_edge(clk) then
     if run_entangle = '1' then
@@ -31,7 +31,7 @@ architecture Behavioral of ent_Cphase is
         QB_source <= "0111111111111111"; -- 0 mV
         QB_target <= "0111111111111111"; -- 0 mV
         counter := counter + 1;
-      elsif counter > 36 then
+      elsif counter > 25 then
         counter := 0;
       end if;
     end if;
