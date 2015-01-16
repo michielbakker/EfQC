@@ -24,6 +24,7 @@ architecture Behavioral of ent_Cphase is
       end if;
       if counter > 20 and counter <= 25 then
           QB_source <= "1100110011001101"; -- 400 mV
+					QB_target <= "0111111111111111"; -- 0 mV
           counter := counter + 1;
       end if;
       if counter > 25 and counter <= 35 then
