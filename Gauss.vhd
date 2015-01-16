@@ -5,9 +5,8 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity Gauss_gen is
 	port (
-		rst           : in std_logic;
+		run_gauss     : in std_logic;
 		clk           : in std_logic;
-		amplitude     : in std_logic_vector(1 downto 0); -- in steps of 250 mV
 		def_1X_0H     : in std_logic;
 		gauss_signal  : out std_logic_vector(15 downto 0));
 	end Gauss_gen;
@@ -15,28 +14,28 @@ entity Gauss_gen is
 
 architecture Behavioral of Gauss_gen is
 	signal  sample_logic      : std_logic_vector(4 downto 0);
-	signal  mVperstep         : integer := 100;
+	signal  amplitude         : std_logic_vector(15 downto 0);
 
 begin
 
-	process(rst, clk) --sampling
+	process(run_gauss, clk) --sampling
 	begin
-		if rst = '1' then
+		if run_gauss = '1' then
 			sample_logic  <= (others => '0');
 			elsif rising_edge(clk) then
 			if def_1X_0H = "0" then           --  HADAMARD
 				sample_logic  <= sample_logic + 4;
-				amplitude     <= 
+				amplitude     <= "0101111111011111"
 			else                              --  X-FLIP
 				sample_logic  <= sample_logic + 5;
-				amplitude     <= 
+				amplitude     <= "0111111111011111"
 			end if;
 		end if;
 	end process;
 
-	process(rst, clk)
+	process(run_gauss, clk)
 		variable sample_int       : integer;
-		variable Gauss_env_int    : integer;
+		variable gauss_signal_int    : integer;
 		variable amplitude_int    : integer;
 		type ROM is array (0 to 255) of integer;
 			variable Gauss_mem      : ROM := (
@@ -63,13 +62,13 @@ begin
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	begin
-		sample_int      := conv_integer(sample_logic);
-		amplitude_int   := conv_integer(amplitude);
+		sample_int         := conv_integer(sample_logic);
+		amplitude_int      := conv_integer(amplitude);
 		if Rst = '1' then
-			Gauss_env     <= (others => '0');
+			gauss_signal     <= (others => '0');
 		elsif rising_edge(clk) then
-			Gauss_env_int := amplitude_int*Gauss_mem(sample_int)+;
-			Gauss_env   <=  conv_std_logic_vector(Gauss_env_int,16);
+			gauss_signal_int    := round(amplitude_int*(Gauss_mem(sample_int)/10917))+32768);
+			gauss_signal     <=  conv_std_logic_vector(gauss_signal_int,16);
 		end if;
 	end process;
 
