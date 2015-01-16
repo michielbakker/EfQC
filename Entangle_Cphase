@@ -1,0 +1,37 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity ent_Cphase is
+	port	(
+		run_parity		: in std_logic;															-- c-phase operation runs while this is "1"
+		clk				: in std_logic;
+		QB_source			: out std_logic_vector(15 downto 0) :="1000000000000000";	-- QuBit1
+		QB_target			: out std_logic_vector(15 downto 0) :="1000000000000000";	-- QuBit2
+		anc_sig			: out std_logic_vector(15 downto 0) :="1000000000000000");	-- Ancilla
+end ent_Cphase;
+
+architecture Behavioral of ent_Cphase is
+
+begin 
+	process (clk, run_parity)
+	variable	counter	:	integer;
+		begin
+		if rising_edge(clk) then
+			if run_parity = '1' then
+				if counter < 20 then
+					QB_source <= "1100110011001101";	-- 400 mV
+					QB_target <= "1100110011001101";	-- 400 mV
+				else if counter < 25 then
+				else
+			end if;
+				QB_source <= "0000110011001101";	-- 100 mV
+				QB_target <= "0000110011001101";	-- 100 mV
+			else
+				QB1_sig	<= "1000000000000000";	-- 0 mV
+				QB2_sig	<= "1000000000000000";	-- 0 mV
+			end if;
+		end if;
+	end process;
+end Behavioral;
