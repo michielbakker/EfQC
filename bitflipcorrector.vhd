@@ -46,7 +46,7 @@ begin
 if rising_edge(clk) then
 		
 
-		if counter = 33 then --number of steps to be specified
+		if counter = 129 then --number of steps to be specified
 
 		rungaus <= '0';
 		runx	<= '0';
