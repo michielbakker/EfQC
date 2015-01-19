@@ -50,13 +50,14 @@ if rising_edge(clk) then
 
 		rungaus <= '0';
 		runx	<= '0';
+		run_corrector <='0';
 		counter :=0;
 
 		else 
 		rungaus <= '1';
 		runx <= '1';
 		end if;
-
+	if run_corrector = '1' then
 	if stateAncilla0 = "01" and stateAncilla1 ="01"  then   -- both qubit are measured 0,
 
 	-- thus they have negative eigenvalues (m=-1), which means that we got a problem
@@ -96,6 +97,8 @@ if rising_edge(clk) then
  		counter := counter +1;
  		
 
+	 end if;
+	 
 	 end if;
 end if;
 
