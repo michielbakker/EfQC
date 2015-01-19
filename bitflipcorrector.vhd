@@ -6,7 +6,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 entity bitflipcorrector is
  		port(
  				clk				: in STD_LOGIC;
- 				
+ 				run_corrector			: in STD_LOGIC;
  				stateAncilla0	: in STD_LOGIC_VECTOR(1 downto 0);
  				stateAncilla1	: in STD_LOGIC_VECTOR(1 downto 0);
 
