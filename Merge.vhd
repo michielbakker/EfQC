@@ -70,9 +70,9 @@ port (
 run_entangle 	: in std_logic;
 clk 				: in std_logic;
 QB_source 		: out std_logic_vector(15 downto 0);
-QB_target 		: out std_logic_vector(15 downto 0);
-)
+QB_target 		: out std_logic_vector(15 downto 0));
 
+end Component;
 
 Component Gauss is
 port(
@@ -134,7 +134,7 @@ Adc_Frame_clk_p_pin : in std_logic; --Frame clk
 Adc_Frame_clk_n_pin : in std_logic;
 Adc_Data_In_p_pin : in std_logic_vector(7 downto 0); --Data
 Adc_Data_In_n_pin : in std_logic_vector(7 downto 0);
--- Sampled data i frame clock - shouldn't go outside FPGA
+-- Sampled data i frame clock - shouldnt go outside FPGA
 -- Comment for implementation and use for simulations and final project
 Int_data0 : out std_logic_vector(11 downto 0);
 Int_data1 : out std_logic_vector(11 downto 0);
@@ -275,6 +275,9 @@ out0 <= (other => '0');
 out1 <= (other => '0');
 out2 <= (other => '0');
 out3 <= (other => '0');
+
+end if;
+
 end Hadamard;
 
 
