@@ -9,14 +9,12 @@ entity Gauss_gen is
 		run_gauss     : in std_logic;
 		clk           : in std_logic;
 		def_1X_0H     : in std_logic;
-		gauss_signal_int	: out	integer;
 		gauss_signal  : out std_logic_vector(15 downto 0):="0111111111111111");
 	end Gauss_gen;
 
 
 architecture Behavioral of Gauss_gen is
 	signal  sample_logic		: std_logic_vector(7 downto 0) :="00000000";
---	signal  amplitude			: std_logic_vector(15 downto 0) :="0000000000000000";
 	signal  amplitude			: integer;
 
 begin
@@ -25,25 +23,28 @@ begin
 	variable	counter	: integer :=0;
 	begin
 		if rising_edge(clk) then
-			if run_gauss = '1' then
-				if def_1X_0H = '0' and counter < 25 then			--  HADAMARD
+			if run_gauss = '1' then					
+				if sample_logic = "00000000" and def_1X_0H = '0' then
+					sample_logic 	<= sample_logic + 2;
+				end if;
+				if def_1X_0H = '0' and counter < 25 then		--  HADAMARD
 					counter := counter + 1;
-					sample_logic  	<= sample_logic + 4;
---					amplitude     	<= "0110000000000000";
+					sample_logic  	<= sample_logic + 5;					
 					amplitude		<= 9;
 				elsif def_1X_0H = '0' and counter >= 25 then
---					amplitude     	<= "0000000000000000";
 					sample_logic	<= "11111111";
 					amplitude		<= 0;
-				elsif def_1X_0H = '1' and counter < 33 then		    --  X-FLIP
+				elsif def_1X_0H = '1' and counter > 0 and counter < 34 then --	 X-FLIP
 					counter := counter + 1;
-					sample_logic  	<= sample_logic + 5;
---					amplitude     	<= "0111111111011111";
+					sample_logic  	<= sample_logic + 4;
 					amplitude		<= 12;
 				elsif def_1X_0H = '1' and counter >= 33 then
---					amplitude     	<= conv_std_logic_vector(0,16);
 					sample_logic	<= "11111111";
 					amplitude		<= 0;
+				elsif def_1X_0H = '1' and counter = 0 then
+					counter := counter + 1;
+					sample_logic	<= "11111100";
+					amplitude		<= 12;
 				end if;
 			elsif run_gauss = '0' then
 				counter :=0;
@@ -83,11 +84,9 @@ begin
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	begin
 		sample_int         		:= conv_integer(sample_logic);
---		amplitude_int      		:= conv_integer(amplitude);
 		if run_gauss = '0' then
 			gauss_signal	<= "0111111111111111";
 		elsif rising_edge(clk) then
---			gauss_signal_int    	:= amplitude*Gauss_mem(sample_int)/10917+32767;
 			gauss_signal_int    	:= amplitude*Gauss_mem(sample_int)/4+32767;
 			gauss_signal     		<= conv_std_logic_vector(gauss_signal_int,16);
 		end if;
