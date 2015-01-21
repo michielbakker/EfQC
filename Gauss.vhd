@@ -30,14 +30,14 @@ begin
 				if def_1X_0H = '0' and counter < 25 then		--  HADAMARD
 					counter := counter + 1;
 					sample_logic  	<= sample_logic + 5;					
-					amplitude		<= 9;
+					amplitude		<= 24576;
 				elsif def_1X_0H = '0' and counter >= 25 then
 					sample_logic	<= "11111111";
 					amplitude		<= 0;
-				elsif def_1X_0H = '1' and counter > 0 and counter < 34 then --	 X-FLIP
+				elsif def_1X_0H = '1' and counter > 0 and counter < 34 then	-- X-FLIP
 					counter := counter + 1;
 					sample_logic  	<= sample_logic + 4;
-					amplitude		<= 12;
+					amplitude		<= 32768;
 				elsif def_1X_0H = '1' and counter >= 33 then
 					sample_logic	<= "11111111";
 					amplitude		<= 0;
@@ -87,7 +87,7 @@ begin
 		if run_gauss = '0' then
 			gauss_signal	<= "0111111111111111";
 		elsif rising_edge(clk) then
-			gauss_signal_int    	:= amplitude*Gauss_mem(sample_int)/4+32767;
+			gauss_signal_int    	:= amplitude*Gauss_mem(sample_int)/10917+32767;
 			gauss_signal     		<= conv_std_logic_vector(gauss_signal_int,16);
 		end if;
 	end process;
