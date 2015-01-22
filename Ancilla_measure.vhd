@@ -17,8 +17,8 @@ begin
 	begin
 	if rising_edge(clk) then
 		if run_parity = '1' then
-			sig_out0 <= "1011111111011111"; -- 500 mV
-			sig_out1 <= "1011111111011111"; -- 500 mV
+			sig_out0 <= "1011111111111111"; -- 500 mV
+			sig_out1 <= "1011111111111111"; -- 500 mV
 		else
 			sig_out0 <= "0111111111111111"; -- 0 mV
 			sig_out1 <= "0111111111111111"; -- 0 mV
